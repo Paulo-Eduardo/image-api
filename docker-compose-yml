@@ -1,0 +1,29 @@
+version: "3.6"
+services:
+  # PostgreSQL
+  postgres_image:
+    container_name: postgres
+    build: ./postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_URL: postgres://admin:password@localhost:5432/ImageDB
+      POSTGRES_DB: ImageDB
+      POSTGRES_HOST: postgres
+    ports:
+      - "5432:5432"
+
+  image_api:
+    build:
+      context: ./api
+      target: dev
+    volumes:
+      - ./api:/api
+    environment:
+      POSTGRES_URI: postgres://admin:password@postgres:5432/ImageDB
+    ports:
+      - "3002:3002"
+    links:
+      - postgres
+    depends_on:
+      - postgres
