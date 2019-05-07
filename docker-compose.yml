@@ -2,7 +2,7 @@ version: "3.6"
 services:
   # PostgreSQL
   postgres_image:
-    container_name: postgres
+    container_name: postgres_image
     build: ./postgres
     environment:
       POSTGRES_USER: admin
@@ -21,9 +21,10 @@ services:
       - ./api:/api
     environment:
       POSTGRES_URI: postgres://admin:password@postgres:5432/ImageDB
+      TINY_KEY:
     ports:
       - "3002:3002"
     links:
-      - postgres
+      - postgres_image
     depends_on:
-      - postgres
+      - postgres_image
