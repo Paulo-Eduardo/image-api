@@ -3,9 +3,6 @@ const cors = require("cors");
 const morgan = require("morgan");
 const knex = require("knex");
 const bodyParser = require("body-parser");
-const tinify = require("tinify");
-
-tinify.key = process.env.TINY_KEY;
 
 var multer = require("multer");
 var upload = multer({ dest: "uploads/" });
@@ -24,7 +21,7 @@ app.use(cors("*"));
 app.use(bodyParser.json());
 
 app.post("/upload", upload.single("image"), (req, res) => {
-  imageController.handleUploadImage(req, res, db, tinify);
+  imageController.handleUploadImage(req, res, db);
 });
 
 app.listen(3002, () => {
