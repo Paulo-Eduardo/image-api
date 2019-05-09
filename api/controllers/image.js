@@ -9,7 +9,6 @@ let s3bucket = new AWS.S3({
 });
 
 const handleUploadImage = (req, res, db) => {
-  console.log(req.file);
   uploadImage(req.file.path, `fullSize/${req.body.title}`);
   Jimp.read(req.file.path)
     .then(image => {
@@ -44,11 +43,14 @@ const uploadImage = (file, key) => {
     Key: key + ".jpg"
   };
 
+  console.log(params);
+
   s3bucket.upload(params, function(err, data) {
     if (err) {
       console.log("error in callback");
       console.log(err);
     }
+    fs.unlinkSync(file);
     console.log("success");
     console.log(data);
   });
